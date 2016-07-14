@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.fansin.mybatis.mybatis.mapper.TradeElementMapper">
+
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="tradetype">
+        <selectKey keyProperty="autoid" order="BEFORE" resultType="java.lang.Long">
+            select SEQ_T_TRADEELEMENT_TRADETYPE.nextval as tradetype from dual
+        </selectKey>
+        insert into TradeElement (
+        authflag,
+        cdflag,
+        tradetypedesc,
+        tradetype,
+        updatetime,
+        createtime
+        )values(
+        #{authflag,jdbcType=VARCHAR},
+        #{cdflag,jdbcType=VARCHAR},
+        #{tradetypedesc,jdbcType=VARCHAR},
+        #{tradetype,jdbcType=VARCHAR},
+        #{updatetime,jdbcType=TIMESTAMP},
+        #{createtime,jdbcType=TIMESTAMP}
+        )
+    </insert>
+
+    <select id="getTradeElement" resultType="com.fansin.mybatis.mybatis.domain.TradeElement">
+        select * from TradeElement where tradetype=#{tradetype}
+    </select>
+
+    <update id="update">
+        update TradeElement
+        set
+        authflag=#{authflag,jdbcType=VARCHAR},
+        cdflag=#{cdflag,jdbcType=VARCHAR},
+        tradetypedesc=#{tradetypedesc,jdbcType=VARCHAR},
+        tradetype=#{tradetype,jdbcType=VARCHAR},
+        updatetime=#{updatetime,jdbcType=TIMESTAMP},
+        createtime=#{createtime,jdbcType=TIMESTAMP}
+        where t.tradetype=#{tradetype}
+    </update>
+
+</mapper>

@@ -1,0 +1,78 @@
+package ${table.packagePath}.mybatis.domain;
+
+import java.sql.Timestamp;
+import java.util.Date;
+import java.lang.Long;
+
+/**
+ * @DBTable ${table.tableName}
+ * auto generator by beetl
+ * auth by zhaofeng ${date(),"yyyy-MM-dd HH:mm:ss"}
+ */
+public class ${table.className} {
+    <%
+    for(column in columnList){
+    %>
+     /*${column.comment}*/
+     private <% if(column.dataType=="VARCHAR2"||column.dataType=="CHAR"||column.dataType=="VARCHAR"){ %>String<%}else if(column.dataType=="DATE"||column.dataType=="TIMESTAMP"||column.dataType=="DATETIME"){%>Date<%}else if(column.dataType=="NUMBER"||column.dataType=="INT"||column.dataType=="INTEGER"){%>Long<%}else{%>String<%}%> ${column.name};
+    <%}%>
+
+    <%
+    for(column in columnList){
+    %>
+     <%
+        if(column.dataType=="DATE"||column.dataType=="TIMESTAMP"||column.dataType=="DATETIME"){
+     %>
+     public Date get${column.setName}() {
+              if(${column.name} == null){
+                 return null;
+              }else{
+                return (Date)${column.name}.clone();
+              }
+          }
+     <%
+     }else{
+     %>
+     public <% if(column.dataType=="VARCHAR2"||column.dataType=="CHAR"||column.dataType=="VARCHAR"){ %>String<%}else if(column.dataType=="NUMBER"||column.dataType=="INT"||column.dataType=="INTEGER"){%>Long<%}else{%>String<%}%> get${column.setName}() {
+         return this.${column.name};
+     }
+     <%}%>
+
+     <%
+        if(column.dataType=="DATE"||column.dataType=="TIMESTAMP"||column.dataType=="DATETIME"){
+     %>
+     public Date get${column.setName}() {
+        if(${column.name} == null){
+            return null;
+        }else{
+            return (Date)${column.name}.clone();
+        }
+     }
+     <%
+     }else{
+     %>
+     public <% if(column.dataType=="VARCHAR2"||column.dataType=="CHAR"||column.dataType=="VARCHAR"){ %>String<%}else if(column.dataType=="NUMBER"||column.dataType=="INT"||column.dataType=="INTEGER"){%>Long<%}else{%>String<%}%> get${column.setName}() {
+         return this.${column.name};
+     }
+     <%}%>
+
+     <%
+        if(column.dataType=="DATE"||column.dataType=="TIMESTAMP"||column.dataType=="DATETIME"){
+     %>
+     public void set${column.setName}(Date ${column.name}) {
+        if(${column.name} == null){
+            this.${column.name} = null;
+        }else{
+            this.${column.name} = (Date)${column.name}.clone();
+        }
+     }
+     <%
+     }else{
+     %>
+     public void set${column.setName}(<% if(column.dataType=="VARCHAR2"||column.dataType=="CHAR"||column.dataType=="VARCHAR"){ %>String<%}else if(column.dataType=="NUMBER"||column.dataType=="INT"||column.dataType=="INTEGER"){%>Long<%}else{%>String<%}%> ${column.name}) {
+         this.${column.name} = ${column.name};
+     }
+     <%}%>
+    <%}%>
+
+}

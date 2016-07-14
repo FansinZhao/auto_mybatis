@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="${table.packagePath}.mybatis.mapper.${table.className}Mapper">
+
+
+    <insert id="insert" useGeneratedKeys="true" <%for(column in columnList){if(column.pk){%>keyProperty="${column.name}"<%}}%>>
+        <%for(column in columnList){if(column.pk){%>
+        <selectKey keyProperty="autoid" order="BEFORE" resultType="java.lang.Long">
+            select SEQ_T_${strutil.toUpperCase(table.className)}_${strutil.toUpperCase(column.name)}.nextval as ${column.name} from dual
+        </selectKey>
+        <%}}%>
+        insert into ${table.className} (
+         <%
+            for(column in columnList){
+         %>
+         ${column.name}<% if(!columnLP.last){ %>,<%}%>
+         <%}%>
+         )values(
+         <%
+            for(column in columnList){
+         %>
+         #{${column.name},jdbcType=<% if(column.dataType=="VARCHAR2"||column.dataType=="CHAR"||column.dataType=="VARCHAR"){ %>VARCHAR<%}else if(column.dataType=="DATE"||column.dataType=="DATETIME"){%>TIMESTAMP<%}else if(column.dataType=="NUMBER"||column.dataType=="INT"||column.dataType=="INTEGER"){%>NUMERIC<%}else{%>${column.dataType}<%}%>}<% if(!columnLP.last){ %>,<%}%>
+         <%}%>
+         )
+    </insert>
+
+    <select id="get${table.className}" resultType="${table.packagePath}.mybatis.domain.${table.className}" >
+        select * from ${table.className} where <%for(column in columnList){if(column.pk){%>${column.name}<%}}%>=#{<%for(column in columnList){if(column.pk){%>${column.name}<%}}%>}
+    </select>
+
+    <update id="update">
+        update ${table.className}
+        set
+        <%
+           for(column in columnList){
+        %>
+        ${column.name}=#{${column.name},jdbcType=<% if(column.dataType=="VARCHAR2"||column.dataType=="CHAR"||column.dataType=="VARCHAR"){ %>VARCHAR<%}else if(column.dataType=="DATE"||column.dataType=="DATETIME"){%>TIMESTAMP<%}else if(column.dataType=="NUMBER"||column.dataType=="INT"||column.dataType=="INTEGER"){%>NUMERIC<%}else{%>${column.dataType}<%}%>}<% if(!columnLP.last){ %>,<%}%>
+        <%}%>
+        where t.<%for(column in columnList){if(column.pk){%>${column.name}<%}}%>=#{<%for(column in columnList){if(column.pk){%>${column.name}<%}}%>}
+    </update>
+
+</mapper>

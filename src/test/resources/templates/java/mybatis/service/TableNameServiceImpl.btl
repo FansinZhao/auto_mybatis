@@ -1,0 +1,42 @@
+package ${table.packagePath}.mybatis.service;
+
+import ${table.packagePath}.mybatis.domain.${table.className};
+import ${table.packagePath}.mybatis.mapper.${table.className}Mapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+
+/**
+ * @DBTable ${table.tableName}
+ * auto generator by beetl
+ * auth by zhaofeng ${date(),"yyyy-MM-dd HH:mm:ss"}
+ */
+@Service("${table.className}Service")
+@Transactional
+public class ${table.className}ServiceImpl implements ${table.className}Service {
+    private static final Logger logger = LoggerFactory.getLogger(${table.className}ServiceImpl.class);
+
+    @Autowired
+    private ${table.className}Mapper mapper;
+
+    @Override
+    public void insert(${table.className} ${ strutil.toLowerCase(table.className)}) {
+        mapper.insert(${ strutil.toLowerCase(table.className)});
+        logger.debug("插入数据成功！");
+    }
+
+    @Override
+    public void update(${table.className} ${ strutil.toLowerCase(table.className)}) {
+        mapper.update(${ strutil.toLowerCase(table.className)});
+        logger.debug("更新数据成功！");
+    }
+
+    @Override
+    public ${table.className} get${table.className}(Long <%for(column in columnList){if(column.pk){%>${column.name}<%}}%>) {
+        return mapper.get${table.className}(<%for(column in columnList){if(column.pk){%>${column.name}<%}}%>);
+    }
+
+}

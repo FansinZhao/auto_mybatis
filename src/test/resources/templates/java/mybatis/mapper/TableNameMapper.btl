@@ -1,0 +1,17 @@
+package ${table.packagePath}.mybatis.mapper;
+
+
+import ${table.packagePath}.mybatis.domain.${table.className};
+
+/**
+ * @DBTable ${table.tableName}
+ * auto generator by beetl
+ * auth by zhaofeng ${date(),"yyyy-MM-dd HH:mm:ss"}
+ */
+public interface ${table.className}Mapper {
+    void insert(${table.className} ${ strutil.toLowerCase(table.className)});
+
+    void update(${table.className} ${ strutil.toLowerCase(table.className)});
+
+    ${table.className} get${table.className}(Long <%for(column in columnList){if(column.pk){%>${column.name}<%}}%>);
+}
